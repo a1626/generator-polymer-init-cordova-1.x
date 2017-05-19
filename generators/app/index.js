@@ -107,8 +107,6 @@ module.exports = class extends Generator {
           name: 'firefoxos'
         },{
           name: 'osx'
-        },{
-          name: 'webos'
         }]
       }]
 
@@ -128,8 +126,14 @@ module.exports = class extends Generator {
 
   writing() {
     this.fs.copyTpl(
-      this.templatePath('**'),
+      `${this.templatePath()}/**/!(shell.html)`,
       this.destinationPath(),
+      this.props
+    );
+    const elementName = this.props.elementName;
+    this.fs.copyTpl(
+      this.templatePath('www/src/shell.html'),
+      this.destinationPath(`www/src/${elementName}.html`),
       this.props
     );
   }
@@ -139,7 +143,8 @@ module.exports = class extends Generator {
       npm: false
     });
     for (var i = 0; i < this.props.platforms.length; i++) {
-      this.spawnCommand('cordova', ['platform','add',this.props.platforms[i],'--save']);
+      this.spawnCommandSync('cordova', ['platform','add',this.props.platforms[i],'--save']);
     }
   }
+
 };
