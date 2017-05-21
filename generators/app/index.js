@@ -33,7 +33,7 @@ module.exports = class extends Generator {
       // To access props later use this.props.someAnswer;
       this.props = props;
 
-      const newPrompts = [{
+      const prompt2 = [{
         type: 'input',
         name: 'packageName',
         message: 'Cordova package?',
@@ -42,21 +42,22 @@ module.exports = class extends Generator {
       },{
         type: 'confirm',
         name: 'cordovaConfig',
-        message: 'Would you like to configure cordova?',
-        default: true
+        message: 'Would you like to configure cordova (There are 6 configurations available, otherwise defaults will be used)?',
+        default: true,
+        store: true
       },{
         when: (response) => {
           return response.cordovaConfig
         },
         name: 'description',
-        message: 'Description (This same description will be used for bower and package.json)?',
+        message: 'Description (This same description will be used for bower.json)?',
         default: 'A sample Apache Cordova application that responds to the deviceready event.'
       },{
         when: (response) => {
           return response.cordovaConfig
         },
         name: 'version',
-        message: 'version (This same description will be used for bower and package.json)?',
+        message: 'version (This same description will be used for bower.json)?',
         default: '1.0.0'
       },{
         when: (response) => {
@@ -64,7 +65,7 @@ module.exports = class extends Generator {
         },
         type: 'input',
         name: 'authors',
-        message: 'authors (This same description will be used for bower and package.json)?',
+        message: 'authors (This same description will be used for bower.json)?',
         default: 'Apache Cordova Team',
         store: true
       },{
@@ -108,31 +109,70 @@ module.exports = class extends Generator {
         },{
           name: 'osx'
         }]
-      }]
+      },
+      {
+        type: 'confirm',
+        name: 'proxy',
+        message: 'proxy configurations?',
+        store: true
+      },
+      {
+        when: (response) => {
+          return response.proxy;
+        },
+        type: 'input',
+        name: 'http',
+        message: 'http proxy?',
+        store: true
+      }];
 
-      return this.prompt(newPrompts).then(props => {
+      return this.prompt(prompt2).then(props => {
         if(!props.cordovaConfig) {
-          defaultProps.packageName = props.packageName;
-          props = defaultProps;
+          props = populateArray(props, defaultProps);
         }
-        const keys = Object.keys(this.props);
-        for (let i = 0; i < keys.length; i++) {
-          props[keys[i]] = this.props[keys[i]];
-        }
-        this.props = props;
+        this.props = populateArray(this.props, props);
+        const prompt3 = [{
+          when: () => {
+            return this.props.proxy;
+          },
+          input: 'input',
+          name: 'https',
+          message: 'https proxy?',
+          default: this.props.http
+        }]
+
+        return this.prompt(prompt3).then(props => {
+          this.props = populateArray(props, this.props);
+        });
       });
     });
   }
 
   writing() {
+    if(this.props.proxy) {
+      this.fs.copyTpl(
+        this.templatePath('bowerrc.txt'),
+        this.destinationPath('.bowerrc'),
+        this.props
+      );
+      this.fs.copyTpl(
+        this.templatePath('gitconfig.txt'),
+        this.destinationPath('.gitconfig'),
+        this.props
+      );
+  } else {
+      this.props.http = "";
+      this.props.https = "";
+  }
+
     this.fs.copyTpl(
-      `${this.templatePath()}/**/!(shell.html)`,
+      `${this.templatePath()}/**/!(*.txt)`,
       this.destinationPath(),
       this.props
     );
     const elementName = this.props.elementName;
     this.fs.copyTpl(
-      this.templatePath('www/src/shell.html'),
+      this.templatePath('www/src/shell.txt'),
       this.destinationPath(`www/src/${elementName}.html`),
       this.props
     );
@@ -142,9 +182,19 @@ module.exports = class extends Generator {
     this.installDependencies({
       npm: false
     });
-    for (var i = 0; i < this.props.platforms.length; i++) {
+    let i=0;
+    while (this.props.platforms && i<this.props.platforms.length) {
       this.spawnCommandSync('cordova', ['platform','add',this.props.platforms[i],'--save']);
+      i++;
     }
   }
 
 };
+
+function populateArray(loopedArray, populatedArray) {
+  const keys = Object.keys(loopedArray);
+  for (let i = 0; i < keys.length; i++) {
+    populatedArray[keys[i]] = loopedArray[keys[i]];
+  }
+  return populatedArray;
+}
