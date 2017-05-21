@@ -1,6 +1,6 @@
 {
   "name": "generator-polymer-init-cordova-1-x",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Polymer cli generator for cordova app",
   "homepage": "",
   "author": {
@@ -16,7 +16,8 @@
     "polymer",
     "yeoman-generator",
     "web-components",
-    "generator"
+    "generator",
+    "polymer-cli"
   ],
   "devDependencies": {
     "yeoman-test": "^1.6.0",
