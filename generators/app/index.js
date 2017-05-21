@@ -14,7 +14,7 @@ module.exports = class extends Generator {
   prompting() {
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to the exquisite ' + chalk.red('generator-polymer-init-cordova-1-x') + ' generator!'
+      'Welcome to the exquisite ' + chalk.red('generator-polymer-init-cordova-1.x') + ' generator!'
     ));
 
     const prompts = [{
