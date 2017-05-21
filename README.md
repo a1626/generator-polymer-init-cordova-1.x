@@ -70,3 +70,6 @@ This project offers following options for user to configure directly from comman
 ## License
 
 MIT © [Abhishek Gupta](https://github.com/a1626)
+
+[npm-image]: https://badge.fury.io/js/generator-polymer-init-cordova-1.x.svg
+[npm-url]: https://www.npmjs.com/package/generator-polymer-init-cordova-1.x
