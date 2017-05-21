@@ -14,17 +14,17 @@ Polymer cli template for cordova. As name suggests template is for Polymer 1.x a
     npm install -g polymer-cli
     ```
   - [Cordova](https://cordova.apache.org/)
-  ```
-  npm install -g cordova
-  ```
+    ```
+    npm install -g cordova
+    ```
 
 ## Installation and Usage
 This package is a template for polymer-cli and hence needs to be used along with same.
 
 - To install the package use npm (Prefer installing the package globally).
-```
-npm install -g generator-polymer-init-cordova-1.x
-```
+  ```
+  npm install -g generator-polymer-init-cordova-1.x
+  ```
 - Then in the directory where you want to create a new project use `polymer init` command and you will find a new package named `cordova-1.x`.
 - Choose the package and you will be asked for some configurations in order to start your project.
 
