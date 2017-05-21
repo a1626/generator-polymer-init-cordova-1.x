@@ -1,3 +1,8 @@
+
+[![npm-image](https://badge.fury.io/js/generator-polymer-init-cordova-1.x.svg)](https://www.npmjs.com/package/generator-polymer-init-cordova-1.x)
+[![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/a1626/generator-polymer-init-cordova-1.x/blob/master/LICENSE)
+
+
 # generator-polymer-init-cordova-1.x
 Polymer cli template for cordova. As name suggests template is for Polymer 1.x applications.
 
@@ -70,8 +75,3 @@ This project offers following options for user to configure directly from comman
 ## License
 
 MIT © [Abhishek Gupta](https://github.com/a1626)
-
-
-
-[npm-image]: https://badge.fury.io/js/generator-polymer-init-cordova-1.x.svg
-[npm-url]: https://www.npmjs.com/package/generator-polymer-init-cordova-1.x
