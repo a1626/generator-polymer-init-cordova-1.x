@@ -151,20 +151,19 @@ module.exports = class extends Generator {
   writing() {
     if(this.props.proxy) {
       this.fs.copyTpl(
-        this.templatePath('bowerrc.txt'),
-        this.destinationPath('.bowerrc'),
-        this.props
-      );
-      this.fs.copyTpl(
         this.templatePath('gitconfig.txt'),
         this.destinationPath('.gitconfig'),
         this.props
       );
-  } else {
+    } else {
       this.props.http = "";
       this.props.https = "";
-  }
-
+    }
+    this.fs.copyTpl(
+      this.templatePath('bowerrc.txt'),
+      this.destinationPath('.bowerrc'),
+      this.props
+    );
     this.fs.copyTpl(
       `${this.templatePath()}/**/!(*.txt)`,
       this.destinationPath(),
